@@ -1,31 +1,24 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './components/Home';
-import Register from './components/Register';
-import Login from './components/Login';
+import { Routes, Route } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
 import TrackWorkout from './components/TrackWorkout';
 import PreviousWorkouts from './components/PreviousWorkouts';
 import CalculateBMI from './components/CalculateBMI';
 import ProgressTracking from './components/ProgressTracking';
+import CalculateBodyFat from './components/CalculateBodyFat';
 
-function App() {
+const App = () => {
   return (
-    <Router>
-      <div>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/track-workout" element={<TrackWorkout />} />
-          <Route path="/previous-workouts" element={<PreviousWorkouts />} />
-          <Route path="/calculate-bmi" element={<CalculateBMI />} />
-          <Route path="/progress-tracking" element={<ProgressTracking />} />
-        </Routes>
-      </div>
-    </Router>
+    <Routes>
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/dashboard" element={<Dashboard />} /> {/* Add this route */}
+      <Route path="/track-workout" element={<TrackWorkout />} />
+      <Route path="/previous-workouts" element={<PreviousWorkouts />} />
+      <Route path="/calculate-bmi" element={<CalculateBMI />} />
+      <Route path="/progress-tracking" element={<ProgressTracking />} />
+      <Route path="/calculate-bodyfat" element={<CalculateBodyFat />} />
+    </Routes>
   );
-}
+};
 
 export default App;

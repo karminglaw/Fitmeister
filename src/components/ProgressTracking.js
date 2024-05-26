@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import 'chart.js/auto';
+import { Container, Typography, FormControl, InputLabel, Select, MenuItem, Box, CircularProgress } from '@mui/material';
 
 const ProgressTracking = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -58,31 +59,35 @@ const ProgressTracking = () => {
   const uniqueWorkouts = [...new Set(workouts.map(workout => workout.type))];
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-md text-center w-full max-w-4xl">
-        <h2 className="text-2xl font-bold mb-6">Progress Tracking</h2>
-        <div className="mb-4">
-          <label className="block text-gray-700">Select Workout</label>
-          <select
+    <Container maxWidth="md" sx={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Box sx={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', boxShadow: 3, width: '100%' }}>
+        <Typography variant="h4" gutterBottom align="center" sx={{ color: '#1877F2' }}>
+          Progress Tracking
+        </Typography>
+        <FormControl fullWidth variant="outlined" sx={{ marginBottom: '1rem' }}>
+          <InputLabel>Select Workout</InputLabel>
+          <Select
             value={selectedWorkout}
             onChange={handleWorkoutChange}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            label="Select Workout"
           >
-            <option value="">Select a workout</option>
+            <MenuItem value=""><em>Select a workout</em></MenuItem>
             {uniqueWorkouts.map(workout => (
-              <option key={workout} value={workout}>
+              <MenuItem key={workout} value={workout}>
                 {workout}
-              </option>
+              </MenuItem>
             ))}
-          </select>
-        </div>
+          </Select>
+        </FormControl>
         {chartData.labels ? (
           <Line data={chartData} />
         ) : (
-          <p>Loading...</p>
+          <Box display="flex" justifyContent="center" alignItems="center" height="200px">
+            <CircularProgress />
+          </Box>
         )}
-      </div>
-    </div>
+      </Box>
+    </Container>
   );
 };
 

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import moment from 'moment'; // Import moment for date formatting
+import { Container, Typography, Box, Button, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress } from '@mui/material';
 
 const PreviousWorkouts = () => {
-  const [groupedWorkouts, setGroupedWorkouts] = useState({});
+  const [workouts, setWorkouts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchWorkouts = async () => {
+      setLoading(true);
       try {
         const token = localStorage.getItem('token');
         const config = {
@@ -16,27 +18,18 @@ const PreviousWorkouts = () => {
           },
         };
         const response = await axios.get('http://localhost:5001/api/workouts', config);
-        
-        const workouts = response.data;
-        
-        // Group workouts by type
-        const grouped = workouts.reduce((acc, workout) => {
-          if (!acc[workout.type]) {
-            acc[workout.type] = [];
-          }
-          acc[workout.type].push(workout);
-          return acc;
-        }, {});
-
-        setGroupedWorkouts(grouped);
+        setWorkouts(response.data);
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching workouts:', error);
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchWorkouts();
   }, []);
 
-  const deleteWorkout = async (id, type) => {
+  const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem('token');
       const config = {
@@ -46,61 +39,78 @@ const PreviousWorkouts = () => {
         },
       };
       await axios.delete(`http://localhost:5001/api/workouts/${id}`, config);
-      setGroupedWorkouts(prevGrouped => {
-        const updated = { ...prevGrouped };
-        updated[type] = updated[type].filter(workout => workout._id !== id);
-        if (updated[type].length === 0) {
-          delete updated[type];
-        }
-        return updated;
-      });
+      setWorkouts(workouts.filter((workout) => workout._id !== id));
     } catch (error) {
-      console.error(error);
+      console.error('Error deleting workout:', error);
     }
   };
 
+  const groupWorkoutsByType = (workouts) => {
+    return workouts.reduce((groups, workout) => {
+      const { type } = workout;
+      if (!groups[type]) {
+        groups[type] = [];
+      }
+      groups[type].push(workout);
+      return groups;
+    }, {});
+  };
+
+  const groupedWorkouts = groupWorkoutsByType(workouts);
+
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-4xl">
-        <h2 className="text-2xl font-bold mb-6 text-center">Previous Workouts</h2>
-        <div className="overflow-x-auto">
-          {Object.keys(groupedWorkouts).map((type) => (
-            <div key={type} className="mb-8">
-              <h3 className="text-xl font-bold mb-4">{type}</h3>
-              <table className="min-w-full bg-white">
-                <thead>
-                  <tr>
-                    <th className="py-2 px-4 border-b">Date</th>
-                    <th className="py-2 px-4 border-b">Sets</th>
-                    <th className="py-2 px-4 border-b">Reps</th>
-                    <th className="py-2 px-4 border-b">Weight (KG)</th>
-                    <th className="py-2 px-4 border-b">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {groupedWorkouts[type].map((workout) => (
-                    <tr key={workout._id}>
-                      <td className="py-2 px-4 border-b">{moment(workout.date).format('DD/MM/YYYY')}</td>
-                      <td className="py-2 px-4 border-b">{workout.sets}</td>
-                      <td className="py-2 px-4 border-b">{workout.reps}</td>
-                      <td className="py-2 px-4 border-b">{workout.weight}</td>
-                      <td className="py-2 px-4 border-b">
-                        <button
-                          className="bg-red-500 text-white py-1 px-2 rounded"
-                          onClick={() => deleteWorkout(workout._id, type)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
+    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="#f0f2f5">
+      <Container maxWidth="md" sx={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', boxShadow: 3 }}>
+        <Typography variant="h4" gutterBottom align="center" sx={{ color: '#1877F2' }}>
+          Previous Workouts
+        </Typography>
+        {loading ? (
+          <Box display="flex" justifyContent="center" alignItems="center" height="200px">
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Box>
+            {Object.keys(groupedWorkouts).map((type) => (
+              <Box key={type} mb={4}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2, color: '#333' }}>
+                  {type}
+                </Typography>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Date</TableCell>
+                      <TableCell>Sets</TableCell>
+                      <TableCell>Reps</TableCell>
+                      <TableCell>Weight (KG)</TableCell>
+                      <TableCell>Actions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {groupedWorkouts[type].map((workout) => (
+                      <TableRow key={workout._id}>
+                        <TableCell>{new Date(workout.date).toLocaleDateString()}</TableCell>
+                        <TableCell>{workout.sets}</TableCell>
+                        <TableCell>{workout.reps}</TableCell>
+                        <TableCell>{workout.weight}</TableCell>
+                        <TableCell>
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={() => handleDelete(workout._id)}
+                          >
+                            Delete
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Box>
+            ))}
+          </Box>
+        )}
+      </Container>
+    </Box>
   );
 };
 

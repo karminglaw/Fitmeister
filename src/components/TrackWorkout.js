@@ -4,6 +4,8 @@ import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import { Container, Typography, Box, Button, TextField, MenuItem, IconButton, Paper, List } from '@mui/material';
+import { Add, Delete } from '@mui/icons-material';
 
 const TrackWorkout = () => {
   const [date, setDate] = useState(new Date());
@@ -13,15 +15,18 @@ const TrackWorkout = () => {
   const navigate = useNavigate();
 
   const standardWorkouts = [
-    'Bicep Curl',
-    'Push Ups',
-    'Incline Chest Flies',
+    'Incline DB Press',
+    'Lateral Raises',
+    'Deadlifts',
     'Squats',
-    'Deadlift',
-    'Bench Press',
-    'Pull Ups',
+    'Leg Presses',
     'Dips',
-    'Lunges'
+    'Calf Raises',
+    'Cable Rows',
+    'Lat Pullovers',
+    'Rear Delt Flies',
+    'Chest Flies',
+    'Tricep Pushdowns'
   ];
 
   const handleAddWorkout = () => {
@@ -58,96 +63,120 @@ const TrackWorkout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-md text-center w-full max-w-4xl">
-        <h2 className="text-2xl font-bold mb-6">Track Workouts</h2>
+    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="#f0f2f5">
+      <Container maxWidth="md" sx={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', boxShadow: 3 }}>
+        <Typography variant="h4" gutterBottom align="center" sx={{ color: '#1877F2' }}>
+          Track Workouts
+        </Typography>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-gray-700">Date</label>
-            <DatePicker
-              selected={date}
-              onChange={(date) => setDate(date)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          <Box mb={4}>
+            <TextField
+              fullWidth
+              label="Date"
+              type="date"
+              value={moment(date).format('YYYY-MM-DD')}
+              onChange={(e) => setDate(new Date(e.target.value))}
+              InputLabelProps={{ shrink: true }}
             />
-          </div>
-          <div>
-            <label className="block text-gray-700">Workout Type</label>
-            <select
+          </Box>
+          <Box mb={4}>
+            <TextField
+              select
+              fullWidth
+              label="Workout Type"
               name="type"
               value={currentWorkout.type}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              SelectProps={{
+                MenuProps: {
+                  PaperProps: {
+                    style: {
+                      maxHeight: 200, // Set the height to show approximately 4 items
+                    },
+                  },
+                },
+              }}
             >
-              <option value="">Select a workout</option>
               {standardWorkouts.map((workout) => (
-                <option key={workout} value={workout}>
+                <MenuItem key={workout} value={workout}>
                   {workout}
-                </option>
+                </MenuItem>
               ))}
-            </select>
-          </div>
-          <div>
-            <label className="block text-gray-700">Sets</label>
-            <input
+            </TextField>
+          </Box>
+          <Box mb={4}>
+            <TextField
+              fullWidth
+              label="Sets"
               type="number"
               name="sets"
               value={currentWorkout.sets}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </div>
-          <div>
-            <label className="block text-gray-700">Reps</label>
-            <input
+          </Box>
+          <Box mb={4}>
+            <TextField
+              fullWidth
+              label="Reps"
               type="number"
               name="reps"
               value={currentWorkout.reps}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </div>
-          <div>
-            <label className="block text-gray-700">Weight (KG)</label>
-            <input
+          </Box>
+          <Box mb={4}>
+            <TextField
+              fullWidth
+              label="Weight (KG)"
               type="number"
               name="weight"
               value={currentWorkout.weight}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </div>
-          <button
+          </Box>
+          <Button
             type="button"
             onClick={handleAddWorkout}
-            className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition duration-300"
+            variant="contained"
+            color="primary"
+            fullWidth
+            startIcon={<Add />}
+            sx={{ marginBottom: '1rem' }}
           >
             Add Workout
-          </button>
+          </Button>
           {workouts.length > 0 && (
-            <div className="mt-4">
-              <h3 className="text-xl font-bold mb-2">Workouts for {moment(date).format('DD/MM/YYYY')}</h3>
-              <ul className="space-y-2">
+            <Paper sx={{ padding: '1rem', marginBottom: '1rem' }}>
+              <Typography variant="h6" gutterBottom>
+                Workouts for {moment(date).format('DD/MM/YYYY')}
+              </Typography>
+              <List>
                 {workouts.map((workout, index) => (
-                  <li key={index} className="flex justify-between bg-gray-200 p-2 rounded-lg">
-                    <span>{workout.type}</span>
-                    <span>{workout.sets} sets</span>
-                    <span>{workout.reps} reps</span>
-                    <span>{workout.weight} kg</span>
-                  </li>
+                  <Box key={index} display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                    <Typography>
+                      {workout.type} - {workout.sets} sets - {workout.reps} reps - {workout.weight} kg
+                    </Typography>
+                    <IconButton color="secondary" onClick={() => setWorkouts(workouts.filter((_, i) => i !== index))}>
+                      <Delete />
+                    </IconButton>
+                  </Box>
                 ))}
-              </ul>
-            </div>
+              </List>
+            </Paper>
           )}
-          {message && <p className="text-red-500">{message}</p>}
-          <button
+          {message && <Typography color="error">{message}</Typography>}
+          <Button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ marginBottom: '1rem' }}
           >
             Log Workouts
-          </button>
+          </Button>
         </form>
-      </div>
-    </div>
+      </Container>
+    </Box>
   );
 };
 
