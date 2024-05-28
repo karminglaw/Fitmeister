@@ -28,6 +28,9 @@ const Dashboard = () => {
           <Button component={Link} to="/calculate-bodyfat" variant="contained" color="primary">
             Calculate Body Fat
           </Button>
+          <Button component={Link} to="/my-journey" variant="contained" color="primary">
+            My Journey
+          </Button>
         </Box>
       </Box>
     </Container>
