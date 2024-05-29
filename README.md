@@ -1,70 +1,55 @@
-# Getting Started with Create React App
+FitMeister: A Tailored Fitness Progress Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Overview
+FitMeister is a personalized fitness progress tracker designed to help users record their personal workout data and monitor their progress over time. The app supports tracking of various workouts, calculates BMI, and allows users to document their fitness journey with photos and notes. It is built with a focus on Personal Record tracking and Progressive Overload, ensuring users can systematically track their improvements and stay motivated.
 
-## Available Scripts
+Features
+Track Workouts: Log details of your workouts including type, sets, reps, and weight.
+Previous Workouts: View a history of your workouts grouped by type.
+Calculate BMI: Easily calculate your Body Mass Index.
+My Journey: Upload progress photos and notes to document your fitness journey.
+Progress Tracking: Visualize your progress with charts and statistics.
+Motivation
+I created FitMeister to address the need for a simple yet comprehensive fitness tracking tool. Many existing apps either lack necessary features or are overly complicated. FitMeister is designed to be user-friendly while providing all the essential tools needed for effective fitness tracking, emphasizing progressive overload and personal record tracking.
 
-In the project directory, you can run:
+How to Run
+Prerequisites
+MongoDB: Ensure you have a MongoDB instance running and obtain the connection string.
+JWT Token: Generate a JWT secret key for authentication.
+Steps to Run
+Set Up Environment Variables:
 
-### `npm start`
+Create a .env file in the root of your project with the following content:
+makefile
+Copy code
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+Replace your_mongodb_connection_string with your actual MongoDB connection string.
+Replace your_jwt_secret_key with your generated JWT secret key.
+Install Dependencies:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+bash
+Copy code
+npm install
+Start the Server:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+bash
+Copy code
+node server.js
+Start the React App:
 
-### `npm test`
+bash
+Copy code
+npm start
+Access the App:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Open your browser and navigate to http://localhost:3000 to start using FitMeister.
+Technologies Used
+Frontend: React, Material-UI
+Backend: Node.js, Express
+Database: MongoDB
+Authentication: JWT (JSON Web Tokens)
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+License
+This project is licensed under the MIT License.
