@@ -3,12 +3,6 @@ FitMeister: A Tailored Fitness Progress Tracker
 Overview
 FitMeister is a personalized fitness progress tracker designed to help users record their personal workout data and monitor their progress over time. The app supports tracking of various workouts, calculates BMI, and allows users to document their fitness journey with photos and notes. It is built with a focus on Personal Record tracking and Progressive Overload, ensuring users can systematically track their improvements and stay motivated.
 
-Features
-Track Workouts: Log details of your workouts including type, sets, reps, and weight.
-Previous Workouts: View a history of your workouts grouped by type.
-Calculate BMI: Easily calculate your Body Mass Index.
-My Journey: Upload progress photos and notes to document your fitness journey.
-Progress Tracking: Visualize your progress with charts and statistics.
 Motivation
 I created FitMeister to address the need for a simple yet comprehensive fitness tracking tool. Many existing apps either lack necessary features or are overly complicated. FitMeister is designed to be user-friendly while providing all the essential tools needed for effective fitness tracking, emphasizing progressive overload and personal record tracking.
 
