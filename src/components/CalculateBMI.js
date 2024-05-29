@@ -1,52 +1,64 @@
 import React, { useState } from 'react';
-import { Container, Box, Typography, TextField, Button, Grid } from '@mui/material';
+import { Container, TextField, Button, Typography, Box } from '@mui/material';
 
 const CalculateBMI = () => {
-  const [weight, setWeight] = useState('');
+  const [age, setAge] = useState('');
   const [height, setHeight] = useState('');
-  const [bmi, setBmi] = useState(null);
+  const [weight, setWeight] = useState('');
+  const [bmi, setBMI] = useState(null);
 
-  const handleCalculate = () => {
-    const heightInMeters = height / 100;
-    const bmiValue = (weight / (heightInMeters * heightInMeters)).toFixed(2);
-    setBmi(bmiValue);
+  const calculateBMI = (e) => {
+    e.preventDefault();
+    if (height && weight) {
+      const heightInMeters = height / 100;
+      const bmiValue = (weight / (heightInMeters * heightInMeters)).toFixed(2);
+      setBMI(bmiValue);
+    }
   };
 
   return (
-    <Container maxWidth="md" sx={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <Box sx={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', boxShadow: 3, width: '100%' }}>
-        <Typography variant="h4" gutterBottom align="center" sx={{ color: '#1877F2' }}>
-          Calculate BMI
-        </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              label="Weight (kg)"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="Height (cm)"
-              value={height}
-              onChange={(e) => setHeight(e.target.value)}
-              fullWidth
-            />
-          </Grid>
-        </Grid>
-        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
-          <Button variant="contained" color="primary" onClick={handleCalculate}>
+    <Container maxWidth="sm" sx={{ bgcolor: 'background.default', p: 4, borderRadius: 2, boxShadow: 1 }}>
+      <Typography variant="h4" align="center" gutterBottom>
+        Calculate BMI
+      </Typography>
+      <form onSubmit={calculateBMI}>
+        <Box display="flex" flexDirection="column" gap={2}>
+          <TextField
+            label="Age"
+            type="number"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            fullWidth
+          />
+          <TextField
+            label="Height (cm)"
+            type="number"
+            value={height}
+            onChange={(e) => setHeight(e.target.value)}
+            fullWidth
+          />
+          <TextField
+            label="Weight (kg)"
+            type="number"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            fullWidth
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+          >
             Calculate
           </Button>
+          {bmi && (
+            <Typography variant="h6" align="center">
+              Your BMI: {bmi}
+            </Typography>
+          )}
         </Box>
-        {bmi && (
-          <Typography variant="h6" align="center" sx={{ marginTop: '1rem', color: '#1877F2' }}>
-            Your BMI is {bmi}
-          </Typography>
-        )}
-      </Box>
+      </form>
     </Container>
   );
 };

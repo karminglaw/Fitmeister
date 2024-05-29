@@ -1,39 +1,33 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Container, Box, Typography, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Box, Button, Card, Typography } from '@mui/material';
 
 const Dashboard = () => {
-  const location = useLocation();
-  const username = location.state?.username || 'User';
-
   return (
-    <Container maxWidth="md" sx={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <Box sx={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', boxShadow: 3, width: '100%' }}>
-        <Typography variant="h4" gutterBottom align="center" sx={{ color: '#1877F2' }}>
-          Hello, {username}
-        </Typography>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <Button component={Link} to="/track-workout" variant="contained" color="primary">
+    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" minHeight="100vh">
+      <Card sx={{ p: 4, borderRadius: 2, boxShadow: 1, textAlign: 'center' }}>
+      <Typography variant="h4" gutterBottom style={{ fontWeight: 'bold' }}>
+        FitMeister
+      </Typography>
+        <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+          <Button variant="contained" color="primary" component={Link} to="/track-workout">
             Track Workout
           </Button>
-          <Button component={Link} to="/previous-workouts" variant="contained" color="primary">
+          <Button variant="contained" color="primary" component={Link} to="/previous-workouts">
             Previous Workouts
           </Button>
-          <Button component={Link} to="/calculate-bmi" variant="contained" color="primary">
+          <Button variant="contained" color="primary" component={Link} to="/progress-tracking">
+            Progress Tracker
+          </Button>
+          <Button variant="contained" color="primary" component={Link} to="/calculate-bmi">
             Calculate BMI
           </Button>
-          <Button component={Link} to="/progress-tracking" variant="contained" color="primary">
-            Track Progress
-          </Button>
-          <Button component={Link} to="/calculate-bodyfat" variant="contained" color="primary">
+          <Button variant="contained" color="primary" component={Link} to="/calculate-bodyfat">
             Calculate Body Fat
           </Button>
-          <Button component={Link} to="/my-journey" variant="contained" color="primary">
-            My Journey
-          </Button>
         </Box>
-      </Box>
-    </Container>
+      </Card>
+    </Box>
   );
 };
 

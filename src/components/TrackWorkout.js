@@ -4,8 +4,7 @@ import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import { Container, Typography, Box, Button, TextField, MenuItem, IconButton, Paper, List } from '@mui/material';
-import { Add, Delete } from '@mui/icons-material';
+import { Box, Button, Container, TextField, Typography, Select, MenuItem } from '@mui/material';
 
 const TrackWorkout = () => {
   const [date, setDate] = useState(new Date());
@@ -63,121 +62,109 @@ const TrackWorkout = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="#f0f2f5">
-      <Container maxWidth="md" sx={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', boxShadow: 3 }}>
-        <Typography variant="h4" gutterBottom align="center" sx={{ color: '#1877F2' }}>
-          Track Workouts
+    <Container
+      maxWidth="sm"
+      sx={{
+        bgcolor: 'background.default',
+        p: 4,
+        pt: 2,
+        pb: 2,
+        borderRadius: 2,
+        boxShadow: 1,
+        mx: 'auto',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '60vh',
+      }}
+    >
+      <Box width="100%">
+        <Typography variant="h4" align="center" gutterBottom>
+          <strong>Track Workout</strong>
         </Typography>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Box mb={4}>
-            <TextField
-              fullWidth
-              label="Date"
-              type="date"
-              value={moment(date).format('YYYY-MM-DD')}
-              onChange={(e) => setDate(new Date(e.target.value))}
-              InputLabelProps={{ shrink: true }}
+        <form onSubmit={handleSubmit}>
+          <Box display="flex" flexDirection="column" gap={2}>
+            <DatePicker
+              selected={date}
+              onChange={(date) => setDate(date)}
+              customInput={<TextField label="Date" fullWidth />}
             />
-          </Box>
-          <Box mb={4}>
-            <TextField
-              select
-              fullWidth
-              label="Workout Type"
-              name="type"
+            <Select
               value={currentWorkout.type}
               onChange={handleChange}
-              SelectProps={{
-                MenuProps: {
-                  PaperProps: {
-                    style: {
-                      maxHeight: 200, // Set the height to show approximately 4 items
-                    },
-                  },
-                },
-              }}
+              displayEmpty
+              name="type"
+              fullWidth
+              sx={{ bgcolor: 'white' }}
             >
-              {standardWorkouts.map((workout) => (
-                <MenuItem key={workout} value={workout}>
+              <MenuItem value="">
+                <em>Select Workout</em>
+              </MenuItem>
+              {standardWorkouts.map((workout, index) => (
+                <MenuItem key={index} value={workout}>
                   {workout}
                 </MenuItem>
               ))}
-            </TextField>
-          </Box>
-          <Box mb={4}>
+            </Select>
             <TextField
-              fullWidth
-              label="Sets"
               type="number"
               name="sets"
               value={currentWorkout.sets}
               onChange={handleChange}
-            />
-          </Box>
-          <Box mb={4}>
-            <TextField
+              label="Sets"
               fullWidth
-              label="Reps"
+            />
+            <TextField
               type="number"
               name="reps"
               value={currentWorkout.reps}
               onChange={handleChange}
-            />
-          </Box>
-          <Box mb={4}>
-            <TextField
+              label="Reps"
               fullWidth
-              label="Weight (KG)"
+            />
+            <TextField
               type="number"
               name="weight"
               value={currentWorkout.weight}
               onChange={handleChange}
+              label="Weight (KG)"
+              fullWidth
             />
-          </Box>
-          <Button
-            type="button"
-            onClick={handleAddWorkout}
-            variant="contained"
-            color="primary"
-            fullWidth
-            startIcon={<Add />}
-            sx={{ marginBottom: '1rem' }}
-          >
-            Add Workout
-          </Button>
-          {workouts.length > 0 && (
-            <Paper sx={{ padding: '1rem', marginBottom: '1rem' }}>
-              <Typography variant="h6" gutterBottom>
-                Workouts for {moment(date).format('DD/MM/YYYY')}
-              </Typography>
-              <List>
-                {workouts.map((workout, index) => (
-                  <Box key={index} display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddWorkout}
+              fullWidth
+            >
+              Add Workout
+            </Button>
+            {workouts.length > 0 && (
+              <Box mt={2}>
+                <Typography variant="h6">Workouts for {moment(date).format('DD/MM/YYYY')}</Typography>
+                <ul>
+                  {workouts.map((workout, index) => (
+                    <li key={index}>
                       {workout.type} - {workout.sets} sets - {workout.reps} reps - {workout.weight} kg
-                    </Typography>
-                    <IconButton color="secondary" onClick={() => setWorkouts(workouts.filter((_, i) => i !== index))}>
-                      <Delete />
-                    </IconButton>
-                  </Box>
-                ))}
-              </List>
-            </Paper>
-          )}
-          {message && <Typography color="error">{message}</Typography>}
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ marginBottom: '1rem' }}
-          >
-            Log Workouts
-          </Button>
+                    </li>
+                  ))}
+                </ul>
+              </Box>
+            )}
+            {message && <Typography color="error">{message}</Typography>}
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+            >
+              Log Workouts
+            </Button>
+          </Box>
         </form>
-      </Container>
-    </Box>
+      </Box>
+    </Container>
   );
 };
 
 export default TrackWorkout;
+

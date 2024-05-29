@@ -2,15 +2,18 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
-    primary: {
-      main: '#1877F2', // Meta blue color
-    },
     background: {
-      default: '#F0F2F5', // Meta background color
+      default: '#f5f5f7',
+    },
+    primary: {
+      main: '#808080',
+    },
+    text: {
+      primary: '#1d1d1f',
     },
   },
   typography: {
-    fontFamily: 'Helvetica Neue, Arial, sans-serif',
+    fontFamily: 'San Francisco, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   },
 });
 

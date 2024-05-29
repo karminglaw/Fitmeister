@@ -45,72 +45,65 @@ const PreviousWorkouts = () => {
     }
   };
 
-  const groupWorkoutsByType = (workouts) => {
-    return workouts.reduce((groups, workout) => {
-      const { type } = workout;
-      if (!groups[type]) {
-        groups[type] = [];
-      }
-      groups[type].push(workout);
-      return groups;
-    }, {});
-  };
-
-  const groupedWorkouts = groupWorkoutsByType(workouts);
-
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="#f0f2f5">
-      <Container maxWidth="md" sx={{ backgroundColor: 'white', padding: '2rem', borderRadius: '8px', boxShadow: 3 }}>
-        <Typography variant="h4" gutterBottom align="center" sx={{ color: '#1877F2' }}>
-          Previous Workouts
-        </Typography>
-        {loading ? (
-          <Box display="flex" justifyContent="center" alignItems="center" height="200px">
-            <CircularProgress />
-          </Box>
-        ) : (
-          <Box>
-            {Object.keys(groupedWorkouts).map((type) => (
-              <Box key={type} mb={4}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2, color: '#333' }}>
-                  {type}
-                </Typography>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Date</TableCell>
-                      <TableCell>Sets</TableCell>
-                      <TableCell>Reps</TableCell>
-                      <TableCell>Weight (KG)</TableCell>
-                      <TableCell>Actions</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {groupedWorkouts[type].map((workout) => (
-                      <TableRow key={workout._id}>
-                        <TableCell>{new Date(workout.date).toLocaleDateString()}</TableCell>
-                        <TableCell>{workout.sets}</TableCell>
-                        <TableCell>{workout.reps}</TableCell>
-                        <TableCell>{workout.weight}</TableCell>
-                        <TableCell>
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            onClick={() => handleDelete(workout._id)}
-                          >
-                            Delete
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Box>
+    <Container maxWidth="md" sx={{ backgroundColor: 'background.default', padding: '2rem', borderRadius: '8px', boxShadow: 3 }}>
+      <Typography variant="h4" gutterBottom align="center">
+        Previous Workouts
+      </Typography>
+      {loading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" height="200px">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Workout Type</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Sets</TableCell>
+              <TableCell>Reps</TableCell>
+              <TableCell>Weight (KG)</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {workouts.reduce((acc, workout) => {
+              const group = acc.find(item => item.type === workout.type);
+              if (group) {
+                group.data.push(workout);
+              } else {
+                acc.push({ type: workout.type, data: [workout] });
+              }
+              return acc;
+            }, []).map((group) => (
+              <React.Fragment key={group.type}>
+                <TableRow>
+                  <TableCell colSpan={6} style={{ backgroundColor: '#f0f0f0', fontWeight: 'bold' }}>{group.type}</TableCell>
+                </TableRow>
+                {group.data.map((workout) => (
+                  <TableRow key={workout._id}>
+                    <TableCell>{workout.type}</TableCell>
+                    <TableCell>{new Date(workout.date).toLocaleDateString()}</TableCell>
+                    <TableCell>{workout.sets}</TableCell>
+                    <TableCell>{workout.reps}</TableCell>
+                    <TableCell>{workout.weight}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => handleDelete(workout._id)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </React.Fragment>
             ))}
-          </Box>
-        )}
-      </Container>
-    </Box>
+          </TableBody>
+        </Table>
+      )}
+    </Container>
   );
 };
 
